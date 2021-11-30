@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="apple-touch-icon" sizes="76x76" href="/static/assets/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="/static/assets/img/favicon.png">
+  <link rel="canonical" href="https://appseed.us/admin-dashboards/flask-dashboard-black">
+  
+  <title>
+    Flask Dashboard Black - {% block title %}{% endblock %} | AppSeed
+  </title>
+
+  <!--     Fonts and icons     -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
+  <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+  <!-- Nucleo Icons -->
+  <link href="/static/assets/css/nucleo-icons.css" rel="stylesheet" />
+  <!-- CSS Files -->
+  <link href="/static/assets/css/black-dashboard.css?v=1.0.0" rel="stylesheet" />
+  <!-- CSS Just for demo purpose, don't include it in your project -->
+  <link href="/static/assets/demo/demo.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+  <!-- Specific Page CSS goes HERE  -->
+  {% block stylesheets %}{% endblock stylesheets %}
+
+</head>
+<body class="">
+    <div class="wrapper">
+
+        {% include 'includes/sidebar.html' %}
+    
+        <div class="main-panel">
+    
+          <div class="content">
+            <canvas id="myChart" width="800" height="400"></canvas>
+    
+          </div>
+    
+          {% include 'includes/footer.html' %}
+    
+        </div>
+        
+      </div>
+    <script>
+        var ctx = document.getElementById("myChart").getContext("2d");
+
+        var lineChart = new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: {{labels | safe}},
+                datasets: [
+                    {
+                        label: "Average CPU",
+                        data: {{ avgCPU | safe}},
+                        fill : false,
+                        borderColor: "rgb(75, 192, 192)",
+                        lineTension: 0.1
+                    },
+                    {
+                        label: "Minimum CPU",
+                        data: {{ minCPU | safe}},
+                        fill : false,
+                        borderColor: "rgb(171, 43, 207)",
+                        lineTension: 0.1
+                    },
+                    {
+                        label: "Maximum CPU",
+                        data: {{ maxCPU | safe}},
+                        fill : false,
+                        borderColor: "rgb(180, 207, 43)",
+                        lineTension: 0.1
+                    }
+                ]
+            },
+            options : {
+                responsive: false
+            }
+        });
+    </script>
+</body>
+</html>

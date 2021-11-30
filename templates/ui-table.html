@@ -1,0 +1,92 @@
+{% extends "index.html" %}
+
+{% block title %} UI Tables {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="row" style="height:500px;">
+  <div class="col-md-12">
+    <div class="card ">
+      <div class="card-header">
+        <h4 class="card-title">EC2 Instances Status</h4>
+      </div>
+      <div class="card-body" >
+        <div class="table-responsive">
+          <table class="table tablesorter " id="">
+            <thead class=" text-primary">
+              <tr>
+                <th>
+                  Name
+                </th>
+                <th>
+                  Instance ID
+                </th>
+                <th>
+                  Region
+                </th>
+                <th>
+                  Public DNS
+                </th>
+                <th class="text-center">
+                  Status
+                </th>
+                <th class="text-center">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for instance in instances %}
+              <tr>
+                <td>
+                  {{instance["name"]}}
+                </td>
+                <td>
+                  {{instance["instanceID"]}}
+                </td>
+                <td>
+                  {{instance["region"]}}
+                </td>
+                <td>
+                  {{instance["publicDNS"]}}
+                </td>
+                <td class="text-center">
+                  {{instance["status"]}}
+                </td>
+                <td>
+                  {%if instance["status"] == "running" %}
+                  
+                  <form method="post" action="/stop">
+                    <input type="hidden" name="id" value={{ instance["instanceID"] }}></input>
+                    <input type="submit" value="Stop Instance" class="btn btn-fill btn-primary" />
+                  </form>
+                  <form method="post" action="/reboot">
+                    <input type="hidden" name="id" value={{ instance["instanceID"] }}></input>
+                    <input type="submit" value="Reboot Instance" class="btn btn-fill btn-primary" />
+                  </form>
+                  {%elif instance["status"] == "stopped"%}
+                  <form method="post" action="/start">
+                    <input type="hidden" name="id" value={{ instance["instanceID"] }}></input>
+                    <input type="submit" value="Start Instance" class="btn btn-fill btn-primary" />
+                  </form>
+                  {% else %}
+                  No action
+                  {%endif%}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}
